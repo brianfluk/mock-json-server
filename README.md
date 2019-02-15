@@ -1,5 +1,5 @@
 # JSON Server for Testing
-This server makes it easy to store and retrieve JSONs at any endpoint on your
+This minimalist server makes it easy to store and retrieve JSONs at any endpoint on your
 localhost. All you need to do is post your JSON with an specified url,
 then you will be able to fetch that JSON from your localhost at that url.
 
