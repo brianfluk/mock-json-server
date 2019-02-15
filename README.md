@@ -6,7 +6,6 @@ then you will be able to fetch that JSON from your localhost at that url.
 ## Installation and Running
 1. ```npm install```
 2. ```npm start```
-3. It will be available at ```localhost:3000/mock``` by default
 
 ## How to Use
 ### Uploading JSON
