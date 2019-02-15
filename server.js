@@ -28,7 +28,7 @@ db.run(sql, [], function (err) {
     }
 });
 
-/** Helper function as a generic Error handler*/
+/** Helper generic error handler*/
 let errFn = (err)=> {
     if (err) console.log(err);
 }
@@ -76,8 +76,7 @@ app.get('/mock', (req, res) => {
     }
     let endpoint = req.query.endpoint;
 
-    // db.get('select * from endpoints where mock_endpoint = "$ep"', {$ep:endpoint}, (err, row) => {
-    db.get(`select * from endpoints where mock_endpoint = ${endpoint}`, (err, row) => { // works but unsafe
+    db.get(`select * from endpoints where mock_endpoint = ${endpoint}`, (err, row) => {
         if (err) {
             console.log(err);
             res.status(500).send("Error");
