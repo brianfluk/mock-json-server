@@ -24,5 +24,3 @@ GET from ```localhost:3000/mock?endpoint="your_link"```
 
 ## Conclusion
 **TADAA!!! That's all!!!**
-
-Please help me and star this if this helped you at all <(*ΦωΦ*)>
