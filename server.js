@@ -78,6 +78,10 @@ app.use(function(req, res) {
             res.status(500).send("Error");
             return
         } else {
+            if (! row) {
+                res.status(500).send(`No data was uploaded to your endpoint '${req.url}'`)
+                return
+            }
             res.json(JSON.parse(row.mock_json))
         }
     })
