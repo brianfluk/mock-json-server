@@ -16,15 +16,16 @@ let sql = `CREATE TABLE IF NOT EXISTS endpoints(
 );`;
 dao.run(sql);
 
-
 // Upload your JSON to an arbitrary endpoint
-// Body format requirements:
-// {
-// 	"endpoint": text,
-// 	"json": json
-// }
+// Body keys: endpoint (text), json (json)
 app.post('/mock', (req, res) => {
-    // TODO: type check and verify body
+    if (! req.body) {
+        res.send('Error: need a body');
+    } else if (! req.body.endpoint) {
+        res.send('Error: need a body that contains an endpoint');
+    } else if (! req.body.json) {
+        res.send('Error: need a body that contains a json');
+    }
 
     let endpoint = req.body.endpoint;
     let serializedJSON = JSON.stringify(req.body.json);
@@ -33,25 +34,24 @@ app.post('/mock', (req, res) => {
     dao.run("insert or ignore into endpoints(mock_endpoint, mock_json) values('" + endpoint + "','"+ serializedJSON + "');");
     dao.run("replace into endpoints(mock_endpoint, mock_json) values('" + endpoint + "','"+ serializedJSON + "');")
 
-    // TODO:  save endpoint url and serialized JSON to endpoints.db (insert or update if exists)
-
-    console.log(req.body)
+    console.log("POST: ", req.body)
     res.send(`saved to database: ${serializedJSON} at link "${endpoint}"`);
 });
 
 // Retrieve a JSON from a previously updated endpoint
-// Query requirements
-// Use url query parameter "endpoint" to specify a desired URL, in quotations
+// URL query parameters: "endpoint"
 app.get('/mock', (req, res) => {
-    // TODO: fetch from endpoints.db by querying for the endpoint url
+    if (! req.query || ! req.query.endpoint) {
+        console.log(`Error: need a query parameter of req.query`);
+        res.send(`Error: need a query parameter of req.query`);
+    }
     let endpoint = req.query.endpoint;
-    let query;
+    // TODO: type check and verify body
+
     dao.get(`select * from endpoints where mock_endpoint = ${endpoint}`).then((data)=> {
-        query = data;
-        console.log(data)
         res.json(JSON.parse(data['mock_json']))
     })
-    console.log(req.query.endpoint);
+    console.log("GET: ", req.query.endpoint);
 })
 
 app.listen(port, () => {
