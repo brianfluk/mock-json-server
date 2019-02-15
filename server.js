@@ -58,8 +58,10 @@ app.post('/', (req, res) => {
     db.serialize(function() {
         let mapping = { $endpoint: endpoint, $json: serializedJSON };
         
-        db.run("insert or ignore into endpoints(mock_endpoint, mock_json) values(($endpoint),($json));", mapping, errFn);
-        db.run("replace into endpoints(mock_endpoint, mock_json) values(($endpoint),($json));", mapping, errFn);
+        db.run("insert or ignore into endpoints(mock_endpoint, mock_json) \
+        values(($endpoint),($json));", mapping, errFn);
+        db.run("replace into endpoints(mock_endpoint, mock_json) \
+        values(($endpoint),($json));", mapping, errFn);
     })
 
     console.log("POST: ", req.body)
@@ -70,7 +72,7 @@ app.post('/', (req, res) => {
  * Retrieve a JSON from a previously updated endpoint
  * */ 
 app.use(function(req, res) {
-    console.log(req.url)
+    console.log(req.method, ": ", req.url)
 
     db.get(`select * from endpoints where mock_endpoint = '${req.url}'`, (err, row) => {
         if (err) {
