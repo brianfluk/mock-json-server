@@ -67,7 +67,7 @@ app.post('/', (req, res) => {
         values(($endpoint),($json));`, mapping, errFn);
     })
 
-    console.log("POST: ", req.body)
+    console.log("POST: \n", req.body)
     res.send(`saved to database: ${serializedJSON} at link "${endpoint}"`);
 });
 
