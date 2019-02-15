@@ -84,7 +84,7 @@ app.use(function (req, res) {
             return
         } else {
             if (!row) {
-                res.status(500).send(`No data was uploaded to your endpoint '${req.url}'`)
+                res.status(404).send(`No data was uploaded to your endpoint '${req.url}'`)
                 return
             }
             res.json(JSON.parse(row.mock_json))
