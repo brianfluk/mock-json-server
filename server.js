@@ -1,5 +1,5 @@
 const express = require('express');
-const port = 3000;
+const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser')
 const app = express();
 
@@ -48,6 +48,7 @@ app.post('/', (req, res) => {
         res.status(400).send('Error: need a body that contains a json');
         return
     }
+    console.log("POST: \n", req.body)
 
     let endpoint = req.body.endpoint;
     if (endpoint[0] !== '/') {
@@ -67,7 +68,7 @@ app.post('/', (req, res) => {
         values(($endpoint),($json));`, mapping, errFn);
     })
 
-    console.log("POST: \n", req.body)
+    
     res.send(`saved to database: ${serializedJSON} at link "${endpoint}"`);
 });
 
