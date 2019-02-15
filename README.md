@@ -10,7 +10,7 @@ then you will be able to fetch that JSON from your localhost at that url.
 
 ## How to Use
 ### Uploading JSON
-Send a POST request to ```localhost:3000/mock``` with the body in the following
+Send a POST request to ```localhost:3000/``` with the body in the following
 format: 
 ```
 {
@@ -20,7 +20,7 @@ format:
 ```
 
 ### Retrieving JSON
-GET from ```localhost:3000/mock?endpoint="your_link"```
+GET from ```localhost:3000/your/link"```
 
 ## Conclusion
 **TADAA!!! That's all!!!**

@@ -37,7 +37,7 @@ let errFn = (err)=> {
  * Upload your JSON to an arbitrary endpoint
  * Body keys: endpoint (text), json (json) 
  * */
-app.post('/mock', (req, res) => {
+app.post('/', (req, res) => {
     if (! req.body) {
         res.status(400).send('Error: need a body');
         return
@@ -50,9 +50,11 @@ app.post('/mock', (req, res) => {
     }
 
     let endpoint = req.body.endpoint;
-    let serializedJSON = JSON.stringify(req.body.json);
-    console.log("serializedJSON", serializedJSON);
+    if (endpoint[0] !== '/') {
+        endpoint = '/' + endpoint
+    }
 
+    let serializedJSON = JSON.stringify(req.body.json);
     db.serialize(function() {
         let mapping = { $endpoint: endpoint, $json: serializedJSON };
         
@@ -66,17 +68,11 @@ app.post('/mock', (req, res) => {
 
 /** 
  * Retrieve a JSON from a previously updated endpoint
- * URL query parameters: "endpoint" 
  * */ 
-app.get('/mock', (req, res) => {
-    if (! req.query || ! req.query.endpoint) {
-        console.log(`Error: need a query parameter of req.query`);
-        res.status(400).send(`Error: need a query parameter of req.query`);
-        return
-    }
-    let endpoint = req.query.endpoint;
+app.use(function(req, res) {
+    console.log(req.url)
 
-    db.get(`select * from endpoints where mock_endpoint = ${endpoint}`, (err, row) => {
+    db.get(`select * from endpoints where mock_endpoint = '${req.url}'`, (err, row) => {
         if (err) {
             console.log(err);
             res.status(500).send("Error");
@@ -85,8 +81,6 @@ app.get('/mock', (req, res) => {
             res.json(JSON.parse(row.mock_json))
         }
     })
-
-    console.log("GET: ", req.query.endpoint);
 })
 
 app.listen(port, () => {
